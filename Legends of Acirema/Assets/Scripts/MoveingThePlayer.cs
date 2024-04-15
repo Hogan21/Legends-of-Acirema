@@ -13,6 +13,10 @@ public class MoveingThePlayer : MonoBehaviour
     [SerializeField] private bool isOnGround = true;
     [SerializeField] private float jumpForce = 7;
 
+    public GameObject RockPrefab;
+    // public Rigidbody RockRb;
+    public GameObject SpawnRocks;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -22,6 +26,9 @@ public class MoveingThePlayer : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (Input.GetMouseButtonDown(0))
+            Cursor.lockState = CursorLockMode.Locked;
+
         verticalinput = Input.GetAxis("Vertical");
         horizontalinput = Input.GetAxis("Horizontal");
         //move
@@ -35,6 +42,16 @@ public class MoveingThePlayer : MonoBehaviour
         {
             playerRb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
             //isOnGround = false;
+        }
+
+        /* if (Input.GetKeyDown(KeyCode.C))
+        {
+            // crouch code goes here
+        } */
+
+        if (Input.GetMouseButtonDown(0))
+        {
+            Instantiate(RockPrefab, SpawnRocks.transform.position, transform.rotation);
         }
     }
 
