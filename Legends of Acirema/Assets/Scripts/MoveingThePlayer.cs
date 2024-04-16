@@ -17,10 +17,22 @@ public class MoveingThePlayer : MonoBehaviour
     // public Rigidbody RockRb;
     public GameObject SpawnRocks;
 
+    private float attackDelay;
+    private float lastAttacktime;
+    [SerializeField] private float autorate;
+
+    private Animator animator;
+    public GameObject PipeWeapon;
+
     // Start is called before the first frame update
     void Start()
     {
         playerRb = GetComponent<Rigidbody>();
+
+        lastAttacktime = Time.time;
+        attackDelay = autorate;
+
+        animator = PipeWeapon.GetComponent<Animator>();
     }
 
     // Update is called once per frame
@@ -49,9 +61,18 @@ public class MoveingThePlayer : MonoBehaviour
             // crouch code goes here
         } */
 
-        if (Input.GetMouseButtonDown(0))
+        float attackDelta = Time.time - lastAttacktime;
+        if ((attackDelta > attackDelay) && (Input.GetMouseButtonDown(0)))
+        {
+            animator.SetTrigger("PipeSwingTest");
+            lastAttacktime = Time.time;
+            attackDelay = autorate;
+        }
+        else if ((attackDelta > attackDelay) && (Input.GetMouseButtonDown(1)))
         {
             Instantiate(RockPrefab, SpawnRocks.transform.position, transform.rotation);
+            lastAttacktime = Time.time;
+            attackDelay = autorate;
         }
     }
 
