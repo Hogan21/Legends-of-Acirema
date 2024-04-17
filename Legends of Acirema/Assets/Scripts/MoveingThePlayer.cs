@@ -17,7 +17,6 @@ public class MoveingThePlayer : MonoBehaviour
     // public Rigidbody RockRb;
     public GameObject SpawnRocks;
 
-    private float attackDelay;
     private float lastAttacktime;
     [SerializeField] private float autorate;
 
@@ -30,7 +29,6 @@ public class MoveingThePlayer : MonoBehaviour
         playerRb = GetComponent<Rigidbody>();
 
         lastAttacktime = Time.time;
-        attackDelay = autorate;
 
         animator = PipeWeapon.GetComponent<Animator>();
     }
@@ -43,12 +41,9 @@ public class MoveingThePlayer : MonoBehaviour
 
         verticalinput = Input.GetAxis("Vertical");
         horizontalinput = Input.GetAxis("Horizontal");
-        //move
         transform.Translate(Vector3.forward * Time.deltaTime * speed * verticalinput);
         transform.Translate(Vector3.right * Time.deltaTime * speed * horizontalinput);
-
         transform.Rotate(0, Input.GetAxis("Mouse X") * sensitivity, 0);
-        // transform.Rotate(0, 0, -Input.GetAxis("QandE") * 90 * Time.deltaTime);
 
         if (Input.GetKeyDown(KeyCode.Space) && isOnGround)
         {
@@ -62,17 +57,15 @@ public class MoveingThePlayer : MonoBehaviour
         } */
 
         float attackDelta = Time.time - lastAttacktime;
-        if ((attackDelta > attackDelay) && (Input.GetMouseButtonDown(0)))
+        if ((attackDelta > autorate) && (Input.GetMouseButtonDown(0)))
         {
             animator.SetTrigger("PipeSwingTest");
             lastAttacktime = Time.time;
-            attackDelay = autorate;
         }
-        else if ((attackDelta > attackDelay) && (Input.GetMouseButtonDown(1)))
+        else if ((attackDelta > autorate) && (Input.GetMouseButtonDown(1)))
         {
             Instantiate(RockPrefab, SpawnRocks.transform.position, transform.rotation);
             lastAttacktime = Time.time;
-            attackDelay = autorate;
         }
     }
 
