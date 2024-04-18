@@ -65,6 +65,7 @@ public class MoveingThePlayer : MonoBehaviour
         else if ((attackDelta > autorate) && (Input.GetMouseButtonDown(1)))
         {
             Instantiate(RockPrefab, SpawnRocks.transform.position, transform.rotation);
+            animator.SetTrigger("Shoot");
             lastAttacktime = Time.time;
         }
     }
