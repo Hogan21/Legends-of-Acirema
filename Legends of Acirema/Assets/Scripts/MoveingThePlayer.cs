@@ -17,8 +17,11 @@ public class MoveingThePlayer : MonoBehaviour
     // public Rigidbody RockRb;
     public GameObject SpawnRocks;
 
-    private float lastAttacktime;
-    [SerializeField] private float autorate;
+    [SerializeField] private float swingCooldown;
+    [SerializeField] private float shootCooldown;
+    [SerializeField] private float swingDelay;
+    [SerializeField] private float shootDelay;
+    private bool animPlaying = false;
 
     private Animator animator;
     public GameObject PipeWeapon;
@@ -28,14 +31,15 @@ public class MoveingThePlayer : MonoBehaviour
     {
         playerRb = GetComponent<Rigidbody>();
 
-        lastAttacktime = Time.time;
-
         animator = PipeWeapon.GetComponent<Animator>();
     }
 
     // Update is called once per frame
     void Update()
     {
+        swingDelay += Time.deltaTime;
+        shootDelay += Time.deltaTime;
+
         if (Input.GetMouseButtonDown(0))
             Cursor.lockState = CursorLockMode.Locked;
 
@@ -55,18 +59,20 @@ public class MoveingThePlayer : MonoBehaviour
         {
             // crouch code goes here
         } */
-
-        float attackDelta = Time.time - lastAttacktime;
-        if ((attackDelta > autorate) && (Input.GetMouseButtonDown(0)))
+        if (!animPlaying)
         {
-            animator.SetTrigger("PipeSwingTest");
-            lastAttacktime = Time.time;
-        }
-        else if ((attackDelta > autorate) && (Input.GetMouseButtonDown(1)))
-        {
-            Instantiate(RockPrefab, SpawnRocks.transform.position, transform.rotation);
-            animator.SetTrigger("Shoot");
-            lastAttacktime = Time.time;
+            if ((swingDelay >= swingCooldown) && (Input.GetMouseButtonDown(0)))
+            {
+                animator.SetTrigger("PipeSwingTest");
+                StartCoroutine(Wait("Swing"));
+                animPlaying = true;
+            }
+            else if ((shootDelay >= shootCooldown) && (Input.GetMouseButtonDown(1)))
+            {
+                animator.SetTrigger("Shoot");
+                StartCoroutine(Wait("Shoot"));
+                animPlaying = true;
+            }
         }
     }
 
@@ -82,6 +88,22 @@ public class MoveingThePlayer : MonoBehaviour
         if (collision.gameObject.CompareTag("Ground"))
         {
             isOnGround = false;
+        }
+    }
+
+    IEnumerator Wait(string action)
+    {
+        if (action == "Shoot")
+        {
+            yield return new WaitForSeconds(0.45f);
+            Instantiate(RockPrefab, SpawnRocks.transform.position, transform.rotation);
+            animPlaying = false;
+            shootDelay = 0;
+        }else if (action == "Swing")
+        {
+            yield return new WaitForSeconds(0.45f);
+            animPlaying = false;
+            swingDelay = 0;
         }
     }
 }
