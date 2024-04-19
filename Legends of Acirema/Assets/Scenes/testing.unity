@@ -950,7 +950,10 @@ MonoBehaviour:
   jumpForce: 7
   RockPrefab: {fileID: 4460853468125464548, guid: 3c7708d54b29a2b4b88d4271402fa0c0, type: 3}
   SpawnRocks: {fileID: 561373294}
-  autorate: 0.5
+  swingCooldown: 0.2
+  shootCooldown: 1
+  swingDelay: 0
+  shootDelay: 0
   PipeWeapon: {fileID: 586744936}
 --- !u!136 &1802621341
 CapsuleCollider:
