@@ -1,0 +1,22 @@
+# Blender 4.0.2 MTL File: 'Pipe.blend'
+# www.blender.org
+
+newmtl Material
+Ns 0.000000
+Ka 0.818898 0.818898 0.818898
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 0.500000
+illum 6
+map_Kd PipeTexture.webp
+
+newmtl pipe_main
+Ns 0.000000
+Ka 0.929134 0.929134 0.929134
+Ks 1.000000 1.000000 1.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 3
+map_Kd PipeTexture.jpg
