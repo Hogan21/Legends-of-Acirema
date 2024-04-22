@@ -32,6 +32,8 @@ public class MoveingThePlayer : MonoBehaviour
         playerRb = GetComponent<Rigidbody>();
 
         animator = PipeWeapon.GetComponent<Animator>();
+
+        speed = 5.0f;
     }
 
     // Update is called once per frame
@@ -48,6 +50,15 @@ public class MoveingThePlayer : MonoBehaviour
         transform.Translate(Vector3.forward * Time.deltaTime * speed * verticalinput);
         transform.Translate(Vector3.right * Time.deltaTime * speed * horizontalinput);
         transform.Rotate(0, Input.GetAxis("Mouse X") * sensitivity, 0);
+
+        if (Input.GetKey(KeyCode.LeftShift))
+        {
+            speed = 10.0f;
+        }
+        else
+        {
+            speed = 5.0f;
+        }
 
         if (Input.GetKeyDown(KeyCode.Space) && isOnGround)
         {
