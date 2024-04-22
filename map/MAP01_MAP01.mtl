@@ -1,0 +1,11 @@
+# MTL for MAP01.wad, map MAP01
+# Created by Ultimate Doom Builder 3.0.0.4166
+
+newmtl STONE3
+Kd 1.0 1.0 1.0
+map_Kd C:\Users\109760\OneDrive - Paulding County School District\Documents\STONE3.png
+
+newmtl FLOOR0_6
+Kd 1.0 1.0 1.0
+map_Kd C:\Users\109760\OneDrive - Paulding County School District\Documents\FLOOR0_6.png
+
