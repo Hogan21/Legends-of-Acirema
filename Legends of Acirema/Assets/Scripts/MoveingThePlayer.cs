@@ -23,6 +23,8 @@ public class MoveingThePlayer : MonoBehaviour
     [SerializeField] private float shootDelay;
     private bool animPlaying = false;
 
+    [SerializeField] private bool hasPipeEquiped = false;
+
     private Animator animator;
     public GameObject PipeWeapon;
 
@@ -51,6 +53,26 @@ public class MoveingThePlayer : MonoBehaviour
         transform.Translate(Vector3.right * Time.deltaTime * speed * horizontalinput);
         transform.Rotate(0, Input.GetAxis("Mouse X") * sensitivity, 0);
 
+        // Testing code for inventory \/
+        /*if (Input.GetKeyDown(KeyCode.Alpha1))
+        {
+            hasPipeEquiped = true;
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha2))
+        {
+            hasPipeEquiped = false;
+        }*/
+        // ----------------------------
+
+        if (hasPipeEquiped == true)
+        {
+            PipeWeapon.SetActive(true);
+        }
+        else
+        {
+            PipeWeapon.SetActive(false);
+        }
+
         if (Input.GetKey(KeyCode.LeftShift))
         {
             speed = 10.0f;
@@ -70,6 +92,7 @@ public class MoveingThePlayer : MonoBehaviour
         {
             // crouch code goes here
         } */
+
         if (!animPlaying)
         {
             if ((swingDelay >= swingCooldown) && (Input.GetMouseButtonDown(0)))
@@ -93,6 +116,12 @@ public class MoveingThePlayer : MonoBehaviour
         {
             isOnGround = true;
         }
+
+        if (collision.gameObject.CompareTag("pipepickup"))
+        {
+            Destroy(collision.gameObject);
+            hasPipeEquiped = true;
+        }
     }
     private void OnCollisionExit(Collision collision)
     {
@@ -107,7 +136,10 @@ public class MoveingThePlayer : MonoBehaviour
         if (action == "Shoot")
         {
             yield return new WaitForSeconds(0.45f);
-            Instantiate(RockPrefab, SpawnRocks.transform.position, transform.rotation);
+            if (hasPipeEquiped == true)
+            {
+                Instantiate(RockPrefab, SpawnRocks.transform.position, transform.rotation);
+            }
             animPlaying = false;
             shootDelay = 0;
         }else if (action == "Swing")
