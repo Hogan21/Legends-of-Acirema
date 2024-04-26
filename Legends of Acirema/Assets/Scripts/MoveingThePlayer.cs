@@ -4,7 +4,11 @@ using UnityEngine;
 
 public class MoveingThePlayer : MonoBehaviour
 {
-    [SerializeField] private float speed = 5.0f;
+    [SerializeField] private float movementSpeed = 5.0f;
+    [SerializeField] private Vector3 speed;
+    [SerializeField] private float timer;
+
+
     private float verticalinput;
     private float horizontalinput;
     [SerializeField] private float sensitivity = 10f;
@@ -23,7 +27,7 @@ public class MoveingThePlayer : MonoBehaviour
     [SerializeField] private float shootDelay;
     private bool animPlaying = false;
 
-    [SerializeField] private bool hasPipeEquiped = false;
+    [SerializeField] private bool hasPipeEquipped = false;
 
     private Animator animator;
     public GameObject PipeWeapon;
@@ -35,64 +39,25 @@ public class MoveingThePlayer : MonoBehaviour
 
         animator = PipeWeapon.GetComponent<Animator>();
 
-        speed = 5.0f;
+        movementSpeed = 5.0f;
     }
 
     // Update is called once per frame
     void Update()
     {
+        Cursor.lockState = CursorLockMode.Locked;
         swingDelay += Time.deltaTime;
         shootDelay += Time.deltaTime;
+        if (isOnGround) { timer += Time.deltaTime; }
+        Attack();
+        Movement();
+        Speed();
+        Inventory();
 
-        if (Input.GetMouseButtonDown(0))
-            Cursor.lockState = CursorLockMode.Locked;
 
-        verticalinput = Input.GetAxis("Vertical");
-        horizontalinput = Input.GetAxis("Horizontal");
-        transform.Translate(Vector3.forward * Time.deltaTime * speed * verticalinput);
-        transform.Translate(Vector3.right * Time.deltaTime * speed * horizontalinput);
-        transform.Rotate(0, Input.GetAxis("Mouse X") * sensitivity, 0);
-
-        // Testing code for inventory \/
-        /*if (Input.GetKeyDown(KeyCode.Alpha1))
-        {
-            hasPipeEquiped = true;
-        }
-        if (Input.GetKeyDown(KeyCode.Alpha2))
-        {
-            hasPipeEquiped = false;
-        }*/
-        // ----------------------------
-
-        if (hasPipeEquiped == true)
-        {
-            PipeWeapon.SetActive(true);
-        }
-        else
-        {
-            PipeWeapon.SetActive(false);
-        }
-
-        if (Input.GetKey(KeyCode.LeftShift))
-        {
-            speed = 10.0f;
-        }
-        else
-        {
-            speed = 5.0f;
-        }
-
-        if (Input.GetKeyDown(KeyCode.Space) && isOnGround)
-        {
-            playerRb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
-            //isOnGround = false;
-        }
-
-        /* if (Input.GetKeyDown(KeyCode.C))
-        {
-            // crouch code goes here
-        } */
-
+    }
+    void Attack()
+    {
         if (!animPlaying)
         {
             if ((swingDelay >= swingCooldown) && (Input.GetMouseButtonDown(0)))
@@ -109,18 +74,55 @@ public class MoveingThePlayer : MonoBehaviour
             }
         }
     }
+    void Movement()
+    {
+        verticalinput = Input.GetAxis("Vertical");
+        horizontalinput = Input.GetAxis("Horizontal");
+        transform.Translate(Vector3.forward * Time.deltaTime * movementSpeed * verticalinput);
+        transform.Translate(Vector3.right * Time.deltaTime * movementSpeed * horizontalinput);
+        transform.Rotate(0, Input.GetAxis("Mouse X") * sensitivity, 0);
+
+
+        if (Input.GetKeyDown(KeyCode.Space) && isOnGround)
+        {
+            playerRb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+            //isOnGround = false;
+        }
+    }
+    void Speed()
+    {
+        
+    }
+    void Inventory()
+    {
+
+        if (hasPipeEquipped == true)
+             {PipeWeapon.SetActive(true);}
+        else {PipeWeapon.SetActive(false);}
+        // Testing code for inventory \/
+        /*if (Input.GetKeyDown(KeyCode.Alpha1))
+        {
+            hasPipeEquiped = true;
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha2))
+        {
+            hasPipeEquiped = false;
+        }*/
+        // ----------------------------
+    }
 
     private void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.CompareTag("Ground"))
         {
             isOnGround = true;
+
         }
 
         if (collision.gameObject.CompareTag("pipepickup"))
         {
             Destroy(collision.gameObject);
-            hasPipeEquiped = true;
+            hasPipeEquipped = true;
         }
     }
     private void OnCollisionExit(Collision collision)
@@ -136,7 +138,7 @@ public class MoveingThePlayer : MonoBehaviour
         if (action == "Shoot")
         {
             yield return new WaitForSeconds(0.45f);
-            if (hasPipeEquiped == true)
+            if (hasPipeEquipped == true)
             {
                 Instantiate(RockPrefab, SpawnRocks.transform.position, transform.rotation);
             }
