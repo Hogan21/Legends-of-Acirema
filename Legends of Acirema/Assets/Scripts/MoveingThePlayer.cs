@@ -6,9 +6,12 @@ public class MoveingThePlayer : MonoBehaviour
 {
     [SerializeField] private float movementSpeed = 5.0f;
     [SerializeField] private Vector3 speed;
+    [SerializeField] private float maxSpeed;
     [SerializeField] private float rotSpeed;
     [SerializeField] private float timer;
     [SerializeField] private float bHop = 1;
+    [SerializeField] private float bInterval;
+    [SerializeField] private float bLimit;
 
 
     private float verticalinput;
@@ -27,6 +30,8 @@ public class MoveingThePlayer : MonoBehaviour
     [SerializeField] private float shootCooldown;
     [SerializeField] private float swingDelay;
     [SerializeField] private float shootDelay;
+    [SerializeField] private Collider hitBox;
+
     private bool animPlaying = false;
 
     [SerializeField] private bool hasPipeEquipped = false;
@@ -37,6 +42,7 @@ public class MoveingThePlayer : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        hitBox.enabled = false;
         playerRb = GetComponent<Rigidbody>();
 
         animator = PipeWeapon.GetComponent<Animator>();
@@ -64,6 +70,7 @@ public class MoveingThePlayer : MonoBehaviour
             if ((swingDelay >= swingCooldown) && (Input.GetMouseButtonDown(0)))
             {
                 animator.SetTrigger("PipeSwingTest");
+                hitBox.enabled = true;
                 StartCoroutine(Wait("Swing"));
                 animPlaying = true;
             }
@@ -77,26 +84,37 @@ public class MoveingThePlayer : MonoBehaviour
     }
     void Movement()
     {
+        speed = playerRb.velocity;
+        if (speed.z < -maxSpeed) { speed.z = -maxSpeed; }
+        if (speed.z > maxSpeed) { speed.z = maxSpeed; }
+        if (speed.x < -maxSpeed) { speed.x = -maxSpeed; }
+        if (speed.x > maxSpeed) { speed.x = maxSpeed; }
+
         verticalinput = Input.GetAxis("Vertical");
         horizontalinput = Input.GetAxis("Horizontal");
+
         transform.Translate(Vector3.forward * Time.deltaTime * movementSpeed * verticalinput);
         transform.Translate(Vector3.right * Time.deltaTime * movementSpeed * horizontalinput);
         transform.Rotate(0, Input.GetAxis("Mouse X") * sensitivity, 0);
-        float y = playerRb.velocity.y;
 
+        float y = playerRb.velocity.y;
         Vector3 v = Vector3.RotateTowards(playerRb.velocity, transform.forward, rotSpeed * Time.deltaTime, 0);
         v.y = y;
         playerRb.velocity = v;
 
         if (Input.GetKeyDown(KeyCode.Space) && isOnGround)
         {
-            if (timer < 0.2f)
+            if (timer < bInterval)
             {
                 Debug.Log("Add");
+
                 bHop *= 1.5f;
+                if (bHop > bLimit)
+                {bHop = bLimit; }
             }else
             {
                 bHop = 1;
+                playerRb.velocity *= 0.2f;
             }
             playerRb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
             playerRb.AddForce(transform.forward * bHop, ForceMode.Impulse);
@@ -157,6 +175,7 @@ public class MoveingThePlayer : MonoBehaviour
         }else if (action == "Swing")
         {
             yield return new WaitForSeconds(0.45f);
+            hitBox.enabled = false;
             animPlaying = false;
             swingDelay = 0;
         }
