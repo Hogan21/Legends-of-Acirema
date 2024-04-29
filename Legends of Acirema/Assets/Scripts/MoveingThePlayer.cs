@@ -6,7 +6,9 @@ public class MoveingThePlayer : MonoBehaviour
 {
     [SerializeField] private float movementSpeed = 5.0f;
     [SerializeField] private Vector3 speed;
+    [SerializeField] private float rotSpeed;
     [SerializeField] private float timer;
+    [SerializeField] private float bHop = 1;
 
 
     private float verticalinput;
@@ -48,10 +50,9 @@ public class MoveingThePlayer : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
         swingDelay += Time.deltaTime;
         shootDelay += Time.deltaTime;
-        if (isOnGround) { timer += Time.deltaTime; }
+        if (isOnGround) { timer += Time.deltaTime; }else if (!isOnGround) { timer = 0; }
         Attack();
         Movement();
-        Speed();
         Inventory();
 
 
@@ -81,17 +82,26 @@ public class MoveingThePlayer : MonoBehaviour
         transform.Translate(Vector3.forward * Time.deltaTime * movementSpeed * verticalinput);
         transform.Translate(Vector3.right * Time.deltaTime * movementSpeed * horizontalinput);
         transform.Rotate(0, Input.GetAxis("Mouse X") * sensitivity, 0);
+        float y = playerRb.velocity.y;
 
+        Vector3 v = Vector3.RotateTowards(playerRb.velocity, transform.forward, rotSpeed * Time.deltaTime, 0);
+        v.y = y;
+        playerRb.velocity = v;
 
         if (Input.GetKeyDown(KeyCode.Space) && isOnGround)
         {
+            if (timer < 0.2f)
+            {
+                Debug.Log("Add");
+                bHop *= 1.5f;
+            }else
+            {
+                bHop = 1;
+            }
             playerRb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+            playerRb.AddForce(transform.forward * bHop, ForceMode.Impulse);
             //isOnGround = false;
         }
-    }
-    void Speed()
-    {
-        
     }
     void Inventory()
     {

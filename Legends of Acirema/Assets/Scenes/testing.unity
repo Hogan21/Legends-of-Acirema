@@ -3455,7 +3455,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   movementSpeed: 8
   speed: {x: 0, y: 0, z: 0}
+  rotSpeed: 2
   timer: 0
+  bHop: 1
   sensitivity: 10
   isOnGround: 1
   jumpForce: 7
