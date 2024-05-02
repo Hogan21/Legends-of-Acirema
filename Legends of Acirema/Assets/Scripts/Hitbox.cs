@@ -21,10 +21,12 @@ public class Hitbox : MonoBehaviour
     {
         if (other.CompareTag("Enemy"))
         {
-            other.GetComponent<Renderer>().material.color = Color.red;
-            other.GetComponent<Health>().health -= damage;
-            if (other.GetComponent<Health>().health > 0)
+            other.GetComponentInChildren<Renderer>().material.color = Color.red;
+            Health health = other.GetComponent<Health>();
+            health.health -= damage;
+            if (health.health > 0 && health.isHit == false)
             {
+                health.isHit = true;
                 StartCoroutine(Wait(other));
             }
         }
@@ -33,7 +35,7 @@ public class Hitbox : MonoBehaviour
     IEnumerator Wait(Collider other)
     {
         yield return new WaitForSeconds(0.3f);
-
-        other.GetComponent<Renderer>().material.color = Color.white;
+        other.GetComponent<Health>().isHit = false;
+        other.GetComponentInChildren<Renderer>().material.color = Color.white;
     }
 }

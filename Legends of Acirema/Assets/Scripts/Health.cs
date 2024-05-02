@@ -5,6 +5,7 @@ using UnityEngine;
 public class Health : MonoBehaviour
 {
     public float health;
+    public bool isHit;
     // Start is called before the first frame update
     void Start()
     {
