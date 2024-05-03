@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MoveingThePlayer : MonoBehaviour
+public class PlayerController : MonoBehaviour
 {
     [SerializeField] private float movementSpeed = 5.0f;
     [SerializeField] private Vector3 speed;
@@ -46,8 +46,6 @@ public class MoveingThePlayer : MonoBehaviour
         playerRb = GetComponent<Rigidbody>();
 
         animator = PipeWeapon.GetComponent<Animator>();
-
-        movementSpeed = 5.0f;
     }
 
     // Update is called once per frame
@@ -65,7 +63,7 @@ public class MoveingThePlayer : MonoBehaviour
     }
     void Attack()
     {
-        if (!animPlaying)
+        if (!animPlaying && hasPipeEquipped)
         {
             if ((swingDelay >= swingCooldown) && (Input.GetMouseButtonDown(0)))
             {
@@ -166,16 +164,14 @@ public class MoveingThePlayer : MonoBehaviour
         if (action == "Shoot")
         {
             yield return new WaitForSeconds(0.45f);
-            if (hasPipeEquipped == true)
-            {
-                Instantiate(RockPrefab, SpawnRocks.transform.position, transform.rotation);
-            }
+            Instantiate(RockPrefab, SpawnRocks.transform.position, transform.rotation);
             animPlaying = false;
             shootDelay = 0;
         }else if (action == "Swing")
         {
-            yield return new WaitForSeconds(0.45f);
+            yield return new WaitForSeconds(0.15f);
             hitBox.enabled = false;
+            yield return new WaitForSeconds(0.30f);
             animPlaying = false;
             swingDelay = 0;
         }

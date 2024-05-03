@@ -21,7 +21,21 @@ public class Hitbox : MonoBehaviour
     {
         if (other.CompareTag("Enemy"))
         {
-            other.GetComponent<Health>().health -= damage;
+            other.GetComponentInChildren<Renderer>().material.color = Color.red;
+            Health health = other.GetComponent<Health>();
+            health.health -= damage;
+            if (health.health > 0 && health.isHit == false)
+            {
+                health.isHit = true;
+                StartCoroutine(Wait(other));
+            }
         }
+    }
+
+    IEnumerator Wait(Collider other)
+    {
+        yield return new WaitForSeconds(0.3f);
+        other.GetComponent<Health>().isHit = false;
+        other.GetComponentInChildren<Renderer>().material.color = Color.white;
     }
 }
