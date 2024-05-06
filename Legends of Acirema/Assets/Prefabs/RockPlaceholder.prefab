@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 2266995412285063723}
   - component: {fileID: 7222801973553884127}
   - component: {fileID: 113010386982630930}
+  - component: {fileID: 1059485108587169553}
   m_Layer: 0
   m_Name: RockPlaceholder
   m_TagString: Untagged
@@ -101,7 +102,7 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 32
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
@@ -148,3 +149,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   jumpForce: 20
   throwForce: 35
+  throwForward: 10
+  Player: {fileID: 0}
+--- !u!114 &1059485108587169553
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4460853468125464548}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e2de9f8943860924eaeb5c3451ca7b0a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  damage: 1
