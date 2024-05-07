@@ -105,7 +105,7 @@ public class PlayerController : MonoBehaviour
             if (timer < bInterval)
             {
                 Debug.Log("Add");
-
+                
                 bHop *= 1.5f;
                 if (bHop > bLimit)
                 {bHop = bLimit; }
