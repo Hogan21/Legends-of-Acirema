@@ -30,5 +30,9 @@ public class RockLaunch : MonoBehaviour
         {
             Destroy(gameObject);
         }
+        /*else if (collision.gameObject.CompareTag("Enemy"))
+        {
+            Destroy(gameObject);
+        }*/
     }
 }
