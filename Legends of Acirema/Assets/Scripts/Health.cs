@@ -15,9 +15,12 @@ public class Health : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (health <= 0)
+        if (health <= 0 && !gameObject.CompareTag("Player"))
         {
             Destroy(gameObject);
-        }  
+        }else if (health <= 0 && gameObject.CompareTag("Player"))
+        {
+            Time.timeScale = 0;
+        }
     }
 }
