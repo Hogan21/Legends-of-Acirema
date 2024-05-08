@@ -165,7 +165,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damage: 1
-  RockModel: {fileID: 5817058869559346096}
+  model: {fileID: 5817058869559346096}
+  isProjectile: 1
 --- !u!1 &5817058869559346096
 GameObject:
   m_ObjectHideFlags: 0

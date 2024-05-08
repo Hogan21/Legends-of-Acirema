@@ -5,7 +5,10 @@ using UnityEngine;
 public class Hitbox : MonoBehaviour
 {
     [SerializeField] private float damage;
-    public GameObject RockModel;
+    [SerializeField] private GameObject model;
+    [SerializeField] private bool isProjectile;
+    [SerializeField] private bool isEnemy;
+    public bool targetHit;
     private bool groundDestroyTrigger = true;
     // Start is called before the first frame update
     void Start()
@@ -21,21 +24,39 @@ public class Hitbox : MonoBehaviour
 
     public void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Enemy"))
+        if (isEnemy)
         {
-            other.GetComponentInChildren<Renderer>().material.color = Color.red;
-            Health health = other.GetComponent<Health>();
-            health.health -= damage;
-            if (health.health > 0 && health.isHit == false)
+            if (other.CompareTag("Player"))
             {
-                health.isHit = true;
-                groundDestroyTrigger = false;
-                StartCoroutine(Wait(other));
+                Health health = other.GetComponent<Health>();
+                health.health -= damage;
+                if (health.health > 0 && health.isHit == false)
+                {
+                    targetHit = true;
+                    health.isHit = true;
+                    groundDestroyTrigger = false;
+                    StartCoroutine(Wait(other));
+                }
             }
-            if (gameObject.CompareTag("Projectile")) { Destroy(RockModel.gameObject); }
+        }else
+        {
+            if (other.CompareTag("Enemy"))
+            {
+                other.GetComponentInChildren<Renderer>().material.color = Color.red;
+                Health health = other.GetComponent<Health>();
+                health.health -= damage;
+                if (health.health > 0 && health.isHit == false)
+                {
+                    targetHit = true;
+                    health.isHit = true;
+                    groundDestroyTrigger = false;
+                    StartCoroutine(Wait(other));
+                }
+                if (isProjectile) { Destroy(model.gameObject); }
+            }
         }
 
-        if (gameObject.CompareTag("Projectile") && other.gameObject.CompareTag("Ground"))
+        if (other.gameObject.CompareTag("Ground") && isProjectile)
         {
             if (groundDestroyTrigger == true) { Destroy(gameObject); }
         }
@@ -47,6 +68,6 @@ public class Hitbox : MonoBehaviour
         other.GetComponent<Health>().isHit = false;
         other.GetComponentInChildren<Renderer>().material.color = Color.white;
 
-        if (gameObject.CompareTag("Projectile")) { Destroy(gameObject); }
+        if (isProjectile) { Destroy(gameObject); }
     }
 }
