@@ -4,15 +4,32 @@ using UnityEngine;
 
 public class CutsceneManager : MonoBehaviour
 {
-    // Start is called before the first frame update
+    public CutsceneManager instance;
+    private void Awake()
+    {
+        if (instance != null && instance != this)
+        {
+            Destroy(this);
+        }
+        else
+        {
+            instance = this;
+        }
+    }
+    [SerializeField] private GameObject gameManager;
+    public bool tutorial;
     void Start()
     {
-        
+        tutorial = true;
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        if (tutorial) { Tutorial(); }
+    }
+    void Tutorial()
+    {
+
     }
 }
