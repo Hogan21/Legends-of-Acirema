@@ -26,6 +26,7 @@ public class UIHealthLow : MonoBehaviour
         {
             float transparency = 0.02f / (health / maxHealth);
             if (transparency > maxTransparency) { transparency = maxTransparency; }
+
             image.color = new Color (image.color.r,image.color.g,image.color.b,transparency);
         }
     }

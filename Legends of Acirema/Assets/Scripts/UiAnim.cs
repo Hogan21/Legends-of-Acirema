@@ -8,6 +8,8 @@ public class UiAnim : MonoBehaviour
     [SerializeField] private Sprite[] sprites;
     [SerializeField] private Image image;
     [SerializeField] private float fps;
+    [SerializeField] private float maxSpeed;
+    [SerializeField] private float minSpeed;
     [SerializeField] private float speed;
     [SerializeField] private GameObject player;
     private Health playerHealth;
@@ -17,7 +19,7 @@ public class UiAnim : MonoBehaviour
     void Start()
     {
         StartCoroutine(Animate());
-        speed = 1 / fps;
+        //speed = 1 / fps;
         playerHealth = player.GetComponent<Health>();
         maxHealth = playerHealth.health;
     }
@@ -26,11 +28,18 @@ public class UiAnim : MonoBehaviour
     void Update()
     {
         speed = playerHealth.health / (maxHealth * 3);
+        if (speed < maxSpeed)
+        {
+            speed = maxSpeed;
+        }
+        if (speed > minSpeed)
+        {
+            speed = minSpeed;
+        }
     }
     IEnumerator Animate()
     {
         if (currentSprite > sprites.Length - 1) { currentSprite = 0; }
-        Debug.Log(currentSprite);
         yield return new WaitForSeconds(speed);
         image.sprite = sprites[currentSprite];
         currentSprite += 1;
