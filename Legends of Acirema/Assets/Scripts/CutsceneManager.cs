@@ -35,8 +35,4 @@ public class CutsceneManager : MonoBehaviour
             gameManager.EndCutscene("WakeUp");
         }
     }
-    void Tutorial()
-    {
-        
-    }
 }
