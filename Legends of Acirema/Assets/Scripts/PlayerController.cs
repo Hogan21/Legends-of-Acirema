@@ -12,7 +12,6 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float bHop = 1;
     [SerializeField] private float bInterval;
     [SerializeField] private float bLimit;
-    private bool isActive;
 
 
     private float verticalinput;
@@ -52,16 +51,13 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (isActive)
-        {
-            Cursor.lockState = CursorLockMode.Locked;
-            swingDelay += Time.deltaTime;
-            shootDelay += Time.deltaTime;
-            if (isOnGround) { timer += Time.deltaTime; } else if (!isOnGround) { timer = 0; }
-            Attack();
-            Movement();
-            Inventory();
-        }
+        Cursor.lockState = CursorLockMode.Locked;
+        swingDelay += Time.deltaTime;
+        shootDelay += Time.deltaTime;
+        if (isOnGround) { timer += Time.deltaTime; } else if (!isOnGround) { timer = 0; }
+        Attack();
+        Movement();
+        Inventory();
     }
     void Attack()
     {

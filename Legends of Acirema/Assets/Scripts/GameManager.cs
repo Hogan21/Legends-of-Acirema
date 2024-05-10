@@ -29,11 +29,17 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-       if (cutsceneManager.instance.tutorial)
-        {
-            enemies.SetActive(false);
-            player.SetActive(false);
 
-        }
+    }
+    public void StartCutscene(string cutscene)
+    {
+        enemies.SetActive(false);
+        player.SetActive(false);
+
+    }
+    public void EndCutscene(string cutscene)
+    {
+        enemies.SetActive(true);
+        player.SetActive(true);
     }
 }

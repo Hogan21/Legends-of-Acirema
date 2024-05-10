@@ -16,20 +16,27 @@ public class CutsceneManager : MonoBehaviour
             instance = this;
         }
     }
-    [SerializeField] private GameObject gameManager;
-    public bool tutorial;
+    [SerializeField] private GameManager gameManager;
+    [SerializeField] private Camera cutsceneCamera;
+    private Animator animator;
     void Start()
     {
-        tutorial = true;
+        gameManager = gameManager.instance;
+        gameManager.StartCutscene("WakeUp");
+        animator = cutsceneCamera.GetComponent<Animator>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (tutorial) { Tutorial(); }
+        if (animator.GetCurrentAnimatorStateInfo(0).IsName("WakeUp") && animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1)
+        {
+            cutsceneCamera.gameObject.SetActive(false);
+            gameManager.EndCutscene("WakeUp");
+        }
     }
     void Tutorial()
     {
-
+        
     }
 }
