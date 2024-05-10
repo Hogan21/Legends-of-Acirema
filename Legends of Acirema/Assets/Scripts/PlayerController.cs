@@ -54,12 +54,10 @@ public class PlayerController : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
         swingDelay += Time.deltaTime;
         shootDelay += Time.deltaTime;
-        if (isOnGround) { timer += Time.deltaTime; }else if (!isOnGround) { timer = 0; }
+        if (isOnGround) { timer += Time.deltaTime; } else if (!isOnGround) { timer = 0; }
         Attack();
         Movement();
         Inventory();
-
-
     }
     void Attack()
     {
@@ -95,18 +93,20 @@ public class PlayerController : MonoBehaviour
         transform.Translate(Vector3.right * Time.deltaTime * movementSpeed * horizontalinput);
         transform.Rotate(0, Input.GetAxis("Mouse X") * sensitivity, 0);
 
-        float y = playerRb.velocity.y;
-        Vector3 v = Vector3.RotateTowards(playerRb.velocity, transform.forward, rotSpeed * Time.deltaTime, 0);
-        v.y = y;
-        playerRb.velocity = v;
+        if (Input.GetKey(KeyCode.W))
+        {
+            float y = playerRb.velocity.y;
+            Vector3 v = Vector3.RotateTowards(playerRb.velocity, transform.forward, rotSpeed * Time.deltaTime, 0);
+            v.y = y;
+            playerRb.velocity = v;
+        }
 
         if (Input.GetKeyDown(KeyCode.Space) && isOnGround)
         {
-            if (timer < bInterval)
+            if (timer < bInterval && Input.GetKey(KeyCode.W))
             {
-                Debug.Log("Add");
                 
-                bHop *= 1.5f;
+                bHop *= 1.3f;
                 if (bHop > bLimit)
                 {bHop = bLimit; }
             }else
@@ -115,7 +115,10 @@ public class PlayerController : MonoBehaviour
                 playerRb.velocity *= 0.2f;
             }
             playerRb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
-            playerRb.AddForce(transform.forward * bHop, ForceMode.Impulse);
+            if (Input.GetKey(KeyCode.W))
+            {
+                playerRb.AddForce(transform.forward * bHop, ForceMode.Impulse);
+            }
             //isOnGround = false;
         }
     }
