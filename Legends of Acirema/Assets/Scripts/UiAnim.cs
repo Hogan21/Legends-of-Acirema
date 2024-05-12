@@ -27,7 +27,7 @@ public class UiAnim : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        speed = playerHealth.health / (maxHealth * 3);
+        speed = playerHealth.health / (maxHealth * 4);
         if (speed < maxSpeed)
         {
             speed = maxSpeed;

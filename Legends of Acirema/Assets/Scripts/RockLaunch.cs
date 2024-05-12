@@ -6,7 +6,6 @@ public class RockLaunch : MonoBehaviour
 {
     private Rigidbody rockRb;
     [SerializeField] private float jumpForce = 20;
-    [SerializeField] private float throwForce = 35;
     [SerializeField] private float throwForward = 10;
 
     public GameObject Player;
