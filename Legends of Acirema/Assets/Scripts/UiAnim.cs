@@ -7,11 +7,12 @@ public class UiAnim : MonoBehaviour
 {
     [SerializeField] private Sprite[] sprites;
     [SerializeField] private Image image;
-    [SerializeField] private float fps;
+    //[SerializeField] private float fps;
     [SerializeField] private float maxSpeed;
     [SerializeField] private float minSpeed;
     [SerializeField] private float speed;
     [SerializeField] private GameObject player;
+    [SerializeField] private bool colorChange;
     private Health playerHealth;
     private float maxHealth;
     private int currentSprite = 0;
@@ -28,6 +29,7 @@ public class UiAnim : MonoBehaviour
     void Update()
     {
         speed = playerHealth.health / (maxHealth * 4);
+        float healthQuotient = playerHealth.health * 2 / (maxHealth );
         if (speed < maxSpeed)
         {
             speed = maxSpeed;
@@ -36,6 +38,11 @@ public class UiAnim : MonoBehaviour
         {
             speed = minSpeed;
         }
+        if (colorChange)
+        {
+            image.color = new Color(healthQuotient, healthQuotient, healthQuotient);
+        }
+        Debug.Log(image.color);
     }
     IEnumerator Animate()
     {

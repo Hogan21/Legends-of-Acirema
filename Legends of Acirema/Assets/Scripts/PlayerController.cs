@@ -34,7 +34,7 @@ public class PlayerController : MonoBehaviour
 
     private bool animPlaying = false;
 
-    [SerializeField] private bool hasPipeEquipped = false;
+    public bool hasPipeEquipped = false;
 
     private Animator animator;
     public GameObject PipeWeapon;

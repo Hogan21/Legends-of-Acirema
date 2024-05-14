@@ -21,6 +21,10 @@ public class GameManager : MonoBehaviour
     [SerializeField] private CutsceneManager cutsceneManager;
     [SerializeField] private GameObject enemies;
     [SerializeField] private GameObject cutsceneAssets;
+    [SerializeField] private GameObject tutTextObject0;
+    [SerializeField] private GameObject tutText0;
+    [SerializeField] private GameObject tutTextObject1;
+    [SerializeField] private GameObject tutText1;
     void Start()
     {
         
@@ -29,7 +33,16 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        if (tutText0.GetComponent<TextOutputter>().isFinished == true &&
+            player.GetComponent<PlayerController>().hasPipeEquipped == true) 
+        {
+            tutTextObject0.SetActive(false);
+            tutTextObject1.SetActive(true);
+        }
+        if (tutText1.GetComponent<TextOutputter>().isFinished == true)
+        {
+            tutTextObject1.SetActive(false);
+        }
     }
     public void StartCutscene(string cutscene)
     {
@@ -41,5 +54,6 @@ public class GameManager : MonoBehaviour
     {
         enemies.SetActive(true);
         player.SetActive(true);
+        tutTextObject0.SetActive(true);
     }
 }
