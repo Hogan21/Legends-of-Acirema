@@ -17,17 +17,19 @@ public class GameManager : MonoBehaviour
         }
     }
     [SerializeField] private GameObject player;
+    [SerializeField] private GameObject transparent;
 
     [SerializeField] private CutsceneManager cutsceneManager;
     [SerializeField] private GameObject enemies;
     [SerializeField] private GameObject cutsceneAssets;
+
     [SerializeField] private GameObject tutTextObject0;
     [SerializeField] private GameObject tutText0;
     [SerializeField] private GameObject tutTextObject1;
     [SerializeField] private GameObject tutText1;
     void Start()
     {
-        
+        transparent.SetActive(true);
     }
 
     // Update is called once per frame
